@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sunshine! 🎂✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts including Great Vibes & Dancing Script -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Geraldine font definition with web fallbacks */
+        @font-face {
+            font-family: 'Geraldine';
+            src: local('Geraldine'), local('Geraldine-Regular');
+        }
+
+        .font-geraldine {
+            font-family: 'Geraldine', 'Great Vibes', 'Dancing Script', cursive, sans-serif;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fce4ec;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Golden Pink Background with dark shining red hearts pattern */
+        .shining-dark-hearts-bg {
+            background-color: #fce4ec;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.35) 0%, rgba(244, 194, 194, 0.6) 60%, rgba(230, 160, 175, 0.8) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24' fill='%2380091e'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: 100% 100%, 32px 32px;
+            background-repeat: no-repeat, repeat;
+        }
+
+        /* Static glowing dark red heart pattern overlay */
+        .heart-pattern-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%239e0b27' opacity='0.45'%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='1' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3Cpath filter='url(%23glow)' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: 50px 50px;
+            background-position: 15px 15px;
+        }
+
+        .card-shadow {
+            box-shadow: 0 12px 35px rgba(184, 41, 74, 0.25), 0 20px 40px -15px rgba(212, 147, 90, 0.3);
+        }
+
+        /* Dynamic floating hearts animation for page 2 */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8) rotate(0deg);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-50vh) scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.4) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-heart {
+            position: fixed;
+            bottom: -60px;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            z-index: 20;
+            filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.4));
+        }
+
+        /* Custom Scrollbar for Letter */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 179, 193, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(225, 29, 72, 0.6);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(225, 29, 72, 0.9);
+        }
+
+        .font-arial-black {
+            font-family: 'Arial Black', 'Gadget', sans-serif;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen p-3 sm:p-6 text-gray-800 shining-dark-hearts-bg">
+
+    <!-- ALL-OVER SHINING DARK RED HEARTS LAYER -->
+    <div class="heart-pattern-layer"></div>
+
+    <!-- AUDIO PLAYER - Updated to Ed Sheeran's Perfect direct audio stream with loop and continuous play -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/fnjkbdvsv/Happy-Birthday-Princess/main/Oru-Paathi-Kadhavu.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- MAIN APP CONTAINER -->
+    <main id="mainContainer" class="w-full max-w-md z-10 my-auto transition-all duration-700">
+
+        <!-- ================= PAGE 1: LOCK SCREEN & PHOTO ================= -->
+        <div id="page1" class="transition-all duration-700 ease-in-out transform opacity-100 scale-100 space-y-0">
+            
+            <!-- HEADER TEXT BOX ABOVE PHOTO -->
+            <div class="m-0 p-0 text-center border-none shadow-none bg-transparent">
+                <h1 class="font-geraldine text-black text-4xl sm:text-5xl leading-tight m-0 p-0 tracking-wide font-normal">
+                    Happy Birthday Sunshine
+                </h1>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow border border-amber-200/60 relative overflow-hidden mt-3">
+                
+                <!-- PHOTO CONTAINER -->
+                <div class="relative w-full aspect-[4/3] bg-rose-100 overflow-hidden">
+                    <img id="frontPhoto" 
+                         src="https://raw.githubusercontent.com/fnjkbdvsv/Happy-Birthday-Princess/main/Birthday.jpeg" 
+                         alt="Portrait" 
+                         class="w-full h-full object-cover object-center"
+                         onerror="this.src='https://placehold.co/800x600/ffe4e6/9f1239?text=Happy+Birthday+❤️'">
+                </div>
+
+                <!-- PASSWORD SECTION BELOW PHOTO -->
+                <div class="p-6 sm:p-8 bg-gradient-to-b from-white to-rose-50/50">
+                    <form id="passwordForm" onsubmit="handlePasswordSubmit(event)" class="space-y-4">
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="passwordInput" 
+                                placeholder="Enter secret password..." 
+                                class="w-full px-5 py-3.5 pl-11 pr-12 rounded-2xl border-2 border-rose-200 focus:border-rose-500 focus:ring-4 focus:ring-rose-200 focus:outline-none transition-all text-center text-gray-700 text-base font-semibold placeholder-gray-400 shadow-inner bg-white/90"
+                                required
+                            >
+                            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400">
+                                <i class="fa-solid font-bold fa-heart"></i>
+                            </div>
+                            <button 
+                                type="button"
+                                onclick="togglePasswordVisibility()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-rose-400 hover:text-rose-600 focus:outline-none p-1 transition-colors"
+                                title="Toggle Password Visibility"
+                            >
+                                <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+
+                        <!-- ERROR & SEQUENTIAL HINT MESSAGE -->
+                        <div id="errorMessage" class="hidden text-rose-700 text-sm font-semibold text-center bg-rose-100/90 py-2.5 px-4 rounded-xl border border-rose-300">
+                            <span id="errorText">Incorrect key, try again! 🔐</span>
+                            <div id="hintText" class="text-xs font-bold text-rose-800 mt-1 italic hidden"></div>
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <button 
+                            type="submit" 
+                            class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 via-pink-600 to-red-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold text-lg shadow-lg hover:shadow-xl transform active:scale-98 transition-all flex items-center justify-center space-x-2 group cursor-pointer border border-rose-300/40"
+                        >
+                            <span>To my better half</span>
+                            <i class="fa-solid fa-heart-circle-check group-hover:scale-125 transition-transform"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: BIRTHDAY LETTER & MUSIC ================= -->
+        <div id="page2" class="hidden transition-all duration-700 ease-in-out transform opacity-0 scale-95 space-y-4 w-full">
+            
+            <!-- FULL SCREEN EXPANDED LETTER CARD -->
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-10 card-shadow border-2 border-rose-200/80 relative overflow-hidden flex flex-col min-h-[82vh] md:min-h-[86vh] w-full">
+                
+                <!-- TOP HEADER BAR WITH SPOTIFY TRACK PLAYER & ROMANTIC TITLE -->
+                <div class="flex flex-col md:flex-row items-center justify-between border-b border-rose-200/60 pb-5 mb-6 gap-4 flex-shrink-0">
+                    <div class="flex items-center space-x-3">
+                        <span class="relative flex h-3.5 w-3.5">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-rose-600"></span>
+                        </span>
+                        <span class="font-geraldine text-3xl sm:text-4xl text-rose-700 tracking-wide font-bold">Hi Kanmani!</span>
+                    </div>
+
+                    <!-- SPOTIFY COMPONENT PLAYER (UPDATED TO "ORU PAADHI KADHAVU") -->
+                    <div class="flex items-center space-x-3 bg-gray-950 text-white p-2.5 sm:p-3 rounded-2xl shadow-md border border-rose-400/30 w-full md:w-auto max-w-xs">
+                        <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=150&q=80" 
+                             alt="Track Cover - Oru Paadhi Kadhavu" 
+                             class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg object-cover shadow-sm flex-shrink-0 border border-white/20">
+                        <div class="flex-grow min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-rose-300 truncate block">Oru Paadhi Kadhavu</span>
+                                <i class="fa-brands fa-spotify text-green-400 text-xs ml-1"></i>
+                            </div>
+                            <span class="text-[10px] text-gray-400 truncate block">Haricharan, Vandana • Thaandavam</span>
+                            
+                            <!-- PROGRESS BAR & TIMESTAMPS -->
+                            <div class="flex items-center space-x-1.5 mt-1">
+                                <span id="spotifyCurrentTime" class="text-[9px] text-gray-400 font-mono">0:00</span>
+                                <div class="w-full bg-gray-800 h-1 rounded-full overflow-hidden">
+                                    <div id="spotifyProgressBar" class="bg-rose-500 h-full w-0 transition-all duration-300"></div>
+                                </div>
+                                <span id="spotifyDuration" class="text-[9px] text-gray-400 font-mono">5:27</span>
+                            </div>
+                        </div>
+
+                        <!-- PLAY/PAUSE CONTROLLER -->
+                        <button onclick="toggleAudio()" id="audioBtn" class="w-8 h-8 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center transition-all flex-shrink-0 cursor-pointer shadow">
+                            <i id="audioIcon" class="fa-solid fa-pause text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- EXPANDED LETTER CONTENT AREA WITH SCROLLING -->
+                <div class="space-y-6 text-gray-800 flex-grow overflow-y-auto custom-scrollbar pr-3 sm:pr-6 text-lg sm:text-xl leading-relaxed">
+                    
+                    <p class="leading-relaxed font-normal text-gray-800">
+                        I have lost words to describe the thoughts in my mind to say how grateful I am to you, for the man I am transforming into as we take foot into the next phase of our life. Live life to the fullest, every day as if it's the last and every second fearless knowing I am here for you, standing with you. And, it really feels like a fairytale knowing everything started with the slightest of glance into your eye and a couple of hair strands falling on side of them. I'll make sure 27 is the number we keep talking about for the rest of our lives munimma!
+                    </p>
+
+                    <p class="leading-relaxed font-normal text-gray-800">
+                        Even if given a time machine, I wouldn't change a single thing thangam, thank you for the women you are and I can't wait to bring my little world closer and complete. Happy Birthday Princess!
+                    </p>
+
+                    <div class="pt-6 border-t border-rose-100 flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 mt-auto">
+                        <div>
+                            <p class="font-arial-black text-lg sm:text-xl text-black tracking-wide uppercase">I LOVE YOU &lt;3</p>
+                        </div>
+                        <button onclick="triggerConfetti()" class="self-end sm:self-auto bg-gradient-to-r from-amber-400 via-rose-500 to-pink-600 hover:scale-105 active:scale-95 text-white px-6 py-3.5 rounded-2xl shadow-lg font-bold text-base transition-all flex items-center space-x-2 cursor-pointer border border-white/40" title="Celebrate!">
+                            <span>Celebrate!</span>
+                            <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOCK SCREEN TEXT LINK AT BOTTOM CENTER -->
+            <div class="text-center pt-2 pb-1">
+                <button 
+                    onclick="lockAndReturn()" 
+                    class="inline-flex items-center space-x-1.5 text-xs sm:text-sm text-rose-700/80 hover:text-rose-900 font-semibold underline underline-offset-4 decoration-rose-400 hover:decoration-rose-700 transition-colors cursor-pointer focus:outline-none"
+                    title="Lock and Return to Screen 1"
+                >
+                    <i class="fa-solid fa-lock text-xs"></i>
+                    <span>Lock Screen & Return</span>
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // CONFIGURATION VARIABLES
+        const SECRET_PASSWORD = "life changing morning"; 
+        let wrongAttemptCount = 0;
+
+        // TOGGLE PASSWORD VISIBILITY
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // PASSWORD SUBMISSION HANDLER WITH SEQUENTIAL HINTS
+        function handlePasswordSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const hintText = document.getElementById('hintText');
+
+            if (input.trim().toLowerCase() === SECRET_PASSWORD.toLowerCase()) {
+                errorMsg.classList.add('hidden');
+                wrongAttemptCount = 0;
+                
+                // Play audio background track continuously
+                const audio = document.getElementById('bgMusic');
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        updateAudioUI(true);
+                    }).catch(err => {
+                        console.log("Audio autoplay prevented by browser:", err);
+                        updateAudioUI(false);
+                    });
+                }
+
+                // Transition to Page 2 & Expand Container Size
+                const mainContainer = document.getElementById('mainContainer');
+                const page1 = document.getElementById('page1');
+                const page2 = document.getElementById('page2');
+
+                page1.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    page1.classList.add('hidden');
+                    
+                    // Expand main container width to fill the screen (max-w-5xl)
+                    mainContainer.classList.remove('max-w-md');
+                    mainContainer.classList.add('max-w-5xl');
+
+                    page2.classList.remove('hidden');
+                    
+                    // Trigger fade in animation
+                    setTimeout(() => {
+                        page2.classList.remove('opacity-0', 'scale-95');
+                        page2.classList.add('opacity-100', 'scale-100');
+                        triggerConfetti();
+                        startFloatingHearts();
+                    }, 50);
+                }, 500);
+
+            } else {
+                wrongAttemptCount++;
+                errorMsg.classList.remove('hidden');
+                hintText.classList.remove('hidden');
+
+                if (wrongAttemptCount === 1) {
+                    errorText.textContent = "Incorrect key!";
+                    hintText.textContent = "Hint: Hair Strand 💇‍♀️";
+                } else {
+                    errorText.textContent = "Almost there!";
+                    hintText.textContent = "Hint: life changing _______ ☀️";
+                }
+
+                document.getElementById('passwordInput').value = '';
+                
+                // Shake effect on card
+                const page1Card = document.getElementById('page1');
+                page1Card.classList.add('translate-x-2');
+                setTimeout(() => page1Card.classList.remove('translate-x-2'), 100);
+                setTimeout(() => page1Card.classList.add('-translate-x-2'), 200);
+                setTimeout(() => page1Card.classList.remove('-translate-x-2'), 300);
+            }
+        }
+
+        // AUDIO & SPOTIFY PLAYER UPDATES
+        const audio = document.getElementById('bgMusic');
+        audio.addEventListener('timeupdate', () => {
+            if (!isNaN(audio.duration) && audio.duration > 0) {
+                const currentTime = audio.currentTime;
+                const duration = audio.duration;
+                const progressPercent = (currentTime / duration) * 100;
+                
+                const currentMin = Math.floor(currentTime / 60);
+                const currentSec = Math.floor(currentTime % 60).toString().padStart(2, '0');
+                const totalMin = Math.floor(duration / 60);
+                const totalSec = Math.floor(duration % 60).toString().padStart(2, '0');
+
+                document.getElementById('spotifyProgressBar').style.width = `${progressPercent}%`;
+                document.getElementById('spotifyCurrentTime').textContent = `${currentMin}:${currentSec}`;
+                document.getElementById('spotifyDuration').textContent = `${totalMin}:${totalSec}`;
+            }
+        });
+
+        // AUDIO TOGGLE HANDLER
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    updateAudioUI(true);
+                }).catch(err => {
+                    console.log("Audio play error:", err);
+                    updateAudioUI(false);
+                });
+            } else {
+                audio.pause();
+                updateAudioUI(false);
+            }
+        }
+
+        function updateAudioUI(isPlaying) {
+            const icon = document.getElementById('audioIcon');
+            if (isPlaying) {
+                icon.className = "fa-solid fa-pause text-xs";
+            } else {
+                icon.className = "fa-solid fa-play text-xs ml-0.5";
+            }
+        }
+
+        // LOCK AND RETURN TO PAGE 1
+        function lockAndReturn() {
+            // 1. Pause Audio & Reset UI
+            audio.pause();
+            audio.currentTime = 0;
+            updateAudioUI(false);
+
+            // 2. Clear Floating Hearts Interval & Existing Hearts
+            if (heartInterval) {
+                clearInterval(heartInterval);
+                heartInterval = null;
+            }
+            document.querySelectorAll('.floating-heart').forEach(el => el.remove());
+
+            // 3. Reset Password Field
+            document.getElementById('passwordInput').value = '';
+
+            // 4. Smooth Transition back to Page 1
+            const mainContainer = document.getElementById('mainContainer');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+
+            page2.classList.remove('opacity-100', 'scale-100');
+            page2.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                page2.classList.add('hidden');
+                
+                // Shrink main container width back to lock screen size
+                mainContainer.classList.remove('max-w-5xl');
+                mainContainer.classList.add('max-w-md');
+
+                page1.classList.remove('hidden');
+
+                setTimeout(() => {
+                    page1.classList.remove('opacity-0', 'scale-95');
+                    page1.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 500);
+        }
+
+        // CONFETTI BURST ANIMATION
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#e11d48', '#ff758f', '#ffb3c1', '#ffd166', '#ffb703']
+                });
+            }
+        }
+
+        // DYNAMIC FLOATING HEARTS ANIMATION
+        let heartInterval;
+        function startFloatingHearts() {
+            if (heartInterval) clearInterval(heartInterval);
+            
+            heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = Math.random() > 0.3 ? '❤️' : '💖';
+                heart.style.left = (Math.random() * 94 + 3) + 'vw';
+                heart.style.animationDuration = (Math.random() * 4 + 3.5) + 's';
+                heart.style.fontSize = (Math.random() * 18 + 16) + 'px';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 7500);
+            }, 250);
+        }
+    </script>
+</body>
+</html>
